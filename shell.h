@@ -1,5 +1,5 @@
-#ifndef JOEL-SHELL
-#define JOEL-SHELL
+#ifndef JOEL_SHELL
+#define JOEL_SHELL
 
 /* Headers */
 #include <stdio.h>

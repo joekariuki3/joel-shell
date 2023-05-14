@@ -57,13 +57,26 @@ int main()
 
 		/* extraxt the next argument(word)*/
 		word = strtok(NULL, " ");
+		
+		/* Add envp here */
+
 	}
-
 	/* display the arguments*/
-for (i = 0; wordArray[i] != NULL; i++)
-{
-	printf("%s\n", wordArray[i]);
-}	
-
+	i = 0;
+	while(wordArray[i])
+	{
+		printf("%s\n", wordArray[i]);
+		i++;
+	}
+	
+	/* free each index memory */
+        for (i = 0; i < wordArraySize; i++)
+        {
+                free(wordArray[i]);
+        }
+	
+	/* free the Arraymemory */
+	free(wordArray);
+	
 	return(0);
 }

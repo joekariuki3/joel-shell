@@ -23,7 +23,10 @@ char *getpath(char **envp, char **wordArray)
         perror("ALLPATH not found");
         exit(98);
     }
+
+    /* Make a copy of ALLPATH n use the copy */
     tempAllPath = strdup(ALLPATH);
+
     /*path found, loop throuh the ALLPATH extracting path*/
     path = strtok(tempAllPath, ":");
 

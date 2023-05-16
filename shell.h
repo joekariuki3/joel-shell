@@ -7,6 +7,7 @@
 #include <string.h> /* remove later after adding string funtions */
 #include <unistd.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 /* Prototypes*/
 char **makeArray(char *string, char *deli);

@@ -12,18 +12,17 @@ int main(int argc, char *argv[], char *envp[])
 {
 	while (1)
 	{
-		char **wordArray, /* *allPath = NULL, *tempAllPath = NULL,*/ *validPathName = NULL;
-		int i;
-		char *string = NULL, *delimiterArgument = " " /*, **pathArray, */ /* *delimiterPath = ":", *path = NULL */;
+		char *prompt = "$ ", **wordArray, *validPathName = NULL, *string = NULL, *delimiterArgument = " ";
 		size_t length = 0;
 		ssize_t read;
+		int promptSize = _strlen(prompt), i;
 
 		if (argc || argv || envp)
 		{
 			;
 		}
 
-		printf("$ ");
+		write(1, prompt, promptSize);
 		/* Read the string using getlinein stdin(keyboard) stream */
 		read = getline(&string, &length, stdin);
 		if (read == -1)

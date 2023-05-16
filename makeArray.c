@@ -19,14 +19,13 @@ char **makeArray(char *string, char *deli)
         wordArraySize++;
 
         /* resize the array n add current word*/
-        wordArray = (char **)realloc(wordArray,
-                                     wordArraySize * sizeof(char *));
+        wordArray = (char **)realloc(wordArray, wordArraySize * sizeof(char *));
         if (wordArray == NULL)
             exit(98);
 
         /* append word to wordArray */
         /* assign memory word to be stored in wordArray[index] */
-        wordLength = strlen(word) + 1;
+        wordLength = _strlen(word) + 1;
         index = wordArraySize - 1;
         wordArray[index] = (char *)malloc(wordLength * sizeof(char));
         if (wordArray[index] == NULL)

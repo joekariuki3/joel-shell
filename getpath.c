@@ -32,7 +32,7 @@ char *getpath(char **envp, char **wordArray)
     {
 
         /* get the size of the complete pathname */
-        pathNameSize = strlen(path) + strlen("/") + strlen(wordArray[0]);
+        pathNameSize = _strlen(path) + _strlen("/") + _strlen(wordArray[0]);
         /* allocate memory for the pathname */
         pathName = (char *)malloc(pathNameSize);
         if (pathName == NULL)

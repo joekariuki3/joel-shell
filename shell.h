@@ -13,4 +13,7 @@ char **makeArray(char *string, char *deli);
 char *getpath(char **envp, char **wordArray);
 void excec();
 
+
+unsigned long int _strlen(char *s);
+
 #endif

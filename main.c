@@ -33,7 +33,7 @@ int main(int argc, char *argv[], char *envp[])
 			exit(98);
 		}
 		/* remove the newline at the end ot the string */
-		string[strlen(string) - 1] = '\0';
+		string[_strlen(string) - 1] = '\0';
 
 		wordArray = makeArray(string, delimiterArgument);
 		validPathName = getpath(envp, wordArray);

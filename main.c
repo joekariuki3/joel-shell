@@ -37,6 +37,7 @@ int main(int argc, char *argv[], char *envp[])
 
 		wordArray = makeArray(string, delimiterArgument);
 		validPathName = getpath(envp, wordArray);
+
 		/* pathArray = makeArray(allPath, delimiterPath);*/
 
 		/* free each index memory */

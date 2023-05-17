@@ -2,7 +2,8 @@
 char **makeArray(char *string, char *deli)
 {
     char *word = NULL, **wordArray;
-    int wordLength = 0, wordArraySize = 0, index;
+    int wordLength = 0, index;
+    size_t wordArraySize = 0;
 
     /* split the string to individual words using strtok */
     word = strtok(string, deli);
@@ -19,7 +20,7 @@ char **makeArray(char *string, char *deli)
         wordArraySize++;
 
         /* resize the array n add current word*/
-        wordArray = (char **)realloc(wordArray, wordArraySize * sizeof(char *));
+        wordArray = (char **)_realloc(wordArray, wordArraySize * sizeof(char *));
         if (wordArray == NULL)
             exit(98);
 

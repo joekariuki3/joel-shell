@@ -16,5 +16,6 @@ void excec();
 
 
 unsigned long int _strlen(char *s);
+void *_realloc(void *ptr, size_t newsize);
 
 #endif

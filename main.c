@@ -39,15 +39,18 @@ int main(int argc, char *argv[], char *envp[])
 
 		/* pathArray = makeArray(allPath, delimiterPath);*/
 
-		/* free each index memory */
-		i = 0;
-		while (wordArray[i])
+		if (wordArray != NULL)
 		{
-			free(wordArray[i]);
-			i++;
+			/* free each index memory */
+			i = 0;
+			while (wordArray[i])
+			{
+				free(wordArray[i]);
+				i++;
+			}
+			/* free the Arraymemory */
+			free(wordArray);
 		}
-		/* free the Arraymemory */
-		free(wordArray);
 		free(validPathName);
 	}
 	return (0);

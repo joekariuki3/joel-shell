@@ -2,8 +2,8 @@
 void makeArray(char **enVars)
 {
     char *string = NULL, *word = NULL, **wordArray = NULL, *validPath = NULL;
-    int isExit = 0, wordCount = 0, i = 0, status;
-    size_t length = 0;
+    int isExit = 0, status;
+    size_t length = 0, wordCount = 0, i = 0;
     ssize_t read;
     pid_t pid;
 
@@ -39,7 +39,7 @@ void makeArray(char **enVars)
     /* count number of words to know amount of memory to allocate */
     while (word != NULL)
     {
-        wordArray = realloc(wordArray, (wordCount + 1) * sizeof(char *));
+        wordArray = _realloc(wordArray, (wordCount * sizeof(char *)), (wordCount + 1) * sizeof(char *));
         if (wordArray == NULL)
         {
             perror("Memory re allocation failed");
@@ -52,7 +52,12 @@ void makeArray(char **enVars)
     }
 
     /*add null terminator to word array*/
-    wordArray = realloc(wordArray, (wordCount + 1) * sizeof(char *));
+    wordArray = _realloc(wordArray, (wordCount * sizeof(char *)), (wordCount + 1) * sizeof(char *));
+    if (wordArray == NULL)
+    {
+        perror("Memory re allocation failed");
+        exit(1);
+    }
     wordArray[wordCount] = NULL;
 
     /* Look for executable */

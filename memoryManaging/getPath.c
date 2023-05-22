@@ -62,13 +62,6 @@ char *getPath(char **wordArray, char **enVars)
         }
         else
         {
-            /* allocate memory for the pathName */
-            pathName = (char *)malloc(sizeof(wordArray[0]));
-            if (pathName == NULL)
-            {
-                perror("Memory to PathName failed");
-                exit(1);
-            }
             /* copy WordArray to PathName */
             pathName = _strdup(wordArray[0]);
         }

@@ -2,9 +2,10 @@
 void makeArray(char **enVars)
 {
     char *string = NULL, *word = NULL, **wordArray = NULL, *validPath = NULL;
-    int isExit = 0, wordCount = 0, i = 0 /* wordLength = 0, index */;
-    size_t length = 0 /*, wordArraySize = 0*/;
+    int isExit = 0, wordCount = 0, i = 0, status;
+    size_t length = 0;
     ssize_t read;
+    pid_t pid;
 
     /* read line entered */
     read = getline(&string, &length, stdin);
@@ -41,7 +42,7 @@ void makeArray(char **enVars)
         wordArray = realloc(wordArray, (wordCount + 1) * sizeof(char *));
         if (wordArray == NULL)
         {
-            perror("Memorry re allocation failed");
+            perror("Memory re allocation failed");
             exit(1);
         }
         /* Now lets append each word to the wordArray */
@@ -50,11 +51,32 @@ void makeArray(char **enVars)
         word = strtok(NULL, " ");
     }
 
+    /*add null terminator to word array*/
+    wordArray = realloc(wordArray, (wordCount + 1) * sizeof(char *));
+    wordArray[wordCount] = NULL;
+
     /* Look for executable */
     validPath = getPath(wordArray, enVars);
     if (validPath)
     {
-        printf("%s\n", validPath);
+        /* if path is valid create a child process n execute it*/
+        pid = fork();
+        if (pid == -1)
+        {
+            /*fork process failed*/
+            perror("Fork() failed");
+            exit(1);
+        }
+        if (pid == 0)
+        {
+            /*child process*/
+            execve(validPath, wordArray, enVars);
+        }
+        if (pid != 0)
+        {
+            wait(&status);
+        }
+        /* free validPath that ws returned from getPath()*/
         free(validPath);
     }
 

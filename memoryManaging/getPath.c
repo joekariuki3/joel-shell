@@ -40,7 +40,7 @@ char *getPath(char **wordArray, char **enVars)
     while (path)
     {
 
-        if ((strchr(wordArray[0], '/')) == NULL)
+        if ((_strchr(wordArray[0], '/')) == NULL)
         {
             /* get the size of the complete pathName */
             pathNameSize = _strlen(path) + _strlen("/") + _strlen(wordArray[0]);

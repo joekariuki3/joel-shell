@@ -3,39 +3,44 @@
 /**
  * _realloc - resizes memory of a particular string arcodingly
  * @ptr: pointer to old memory
- * @newsize: size of the new memory to be created
+ * @newSize: newsize of the new memory to be created
+ * @oldSize: oldSize of ptr
  * Returns: poiter to new memory or NULL
  */
-void *_realloc(void *ptr, size_t oldSize, size_t size)
+void *_realloc(void *ptr, size_t oldSize, size_t newSize)
 {
-    void *newptr;
+    void *newPtr;
     size_t i;
     char *src, *dest;
 
-    if (size == 0)
+    /*check if new size is 0 free the incoming ptr*/
+    if (newSize == 0)
     {
         free(ptr);
         return (NULL);
     }
 
-    newptr = malloc(size);
-    if (newptr == NULL)
+    /*create newPtr memory*/
+    newPtr = malloc(newSize);
+    if (newPtr == NULL)
     {
         return (NULL);
     }
 
+    /*if ptr had data in it create placeholders to transfer data to new memory(newPtr)*/
     if (ptr != NULL)
     {
         src = (char *)ptr;
-        dest = (char *)newptr;
+        dest = (char *)newPtr;
 
-        /* copy data from ptr to newptr */
+        /* copy data from ptr to newPtr */
 
-        for (i = 0; i < size && i < oldSize; i++)
+        for (i = 0; i < newSize && i < oldSize; i++)
         {
             dest[i] = src[i];
         }
+        /* free ptr after moving data to dest*/
         free(ptr);
     }
-    return (newptr);
+    return (newPtr);
 }

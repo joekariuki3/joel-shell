@@ -12,7 +12,6 @@ void makeArray(char **enVars)
     /*confirm line was read */
     if (read == -1)
     {
-        perror("Getline reached end of line");
         exit(1);
     }
 

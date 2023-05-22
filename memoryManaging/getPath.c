@@ -14,6 +14,7 @@ char *getPath(char **wordArray, char **enVars)
         perror("enVars NULL");
         return (NULL);
     }
+
     /* loop through enVars vector to find the path variable */
     for (i = 0; enVars[i] != NULL; i++)
     {
@@ -38,24 +39,39 @@ char *getPath(char **wordArray, char **enVars)
 
     while (path)
     {
-        /* get the size of the complete pathName */
-        pathNameSize = _strlen(path) + _strlen("/") + _strlen(wordArray[0]);
-        /* allocate memory for the pathName */
-        pathName = (char *)malloc(pathNameSize * sizeof(char *));
-        if (pathName == NULL)
+
+        if ((strchr(wordArray[0], '/')) == NULL)
         {
-            perror("Memory to PathName failed");
-            exit(1);
+            /* get the size of the complete pathName */
+            pathNameSize = _strlen(path) + _strlen("/") + _strlen(wordArray[0]);
+            /* allocate memory for the pathName */
+            pathName = (char *)malloc(pathNameSize * sizeof(char *));
+            if (pathName == NULL)
+            {
+                perror("Memory to PathName failed");
+                exit(1);
+            }
+            /* copy path to the pathname */
+            _strcpy(pathName, path);
+
+            /* add / to pathname */
+            _strcat(pathName, "/");
+
+            /* add the 1st argument to the path */
+            _strcat(pathName, wordArray[0]);
         }
-
-        /* copy path to the pathname */
-        _strcpy(pathName, path);
-
-        /* add / to pathname */
-        _strcat(pathName, "/");
-
-        /* add the 1st argument to the path */
-        _strcat(pathName, wordArray[0]);
+        else
+        {
+            /* allocate memory for the pathName */
+            pathName = (char *)malloc(sizeof(wordArray[0]));
+            if (pathName == NULL)
+            {
+                perror("Memory to PathName failed");
+                exit(1);
+            }
+            /* copy WordArray to PathName */
+            pathName = _strdup(wordArray[0]);
+        }
 
         /* check if the full pathName is valid n executable */
         if (access(pathName, X_OK) != 0)

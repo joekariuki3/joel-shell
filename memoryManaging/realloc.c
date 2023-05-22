@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * _realloc - resizes memory of a particular string arcodingly
+ * _realloc - resizes memory of a particular string accordingly
  * @ptr: pointer to old memory
  * @newSize: newsize of the new memory to be created
  * @oldSize: oldSize of ptr
- * Returns: poiter to new memory or NULL
+ * Returns: pointer to new memory or NULL
  */
 void *_realloc(void *ptr, size_t oldSize, size_t newSize)
 {

@@ -18,7 +18,7 @@ char *getPath(char **wordArray, char **enVars)
     for (i = 0; enVars[i] != NULL; i++)
     {
         /*look for PATH using strncmp*/
-        if (strncmp(enVars[i], "PATH=", 5) == 0)
+        if (_strncmp(enVars[i], "PATH=", 5) == 0)
         {
             allPath = enVars[i] + 5; /*remove PATH=*/
             break;
@@ -32,7 +32,7 @@ char *getPath(char **wordArray, char **enVars)
     }
 
     /* Make a copy of allPath n use the copy */
-    tempPath = strdup(allPath);
+    tempPath = _strdup(allPath);
 
     path = strtok(tempPath, ":");
 
@@ -49,13 +49,13 @@ char *getPath(char **wordArray, char **enVars)
         }
 
         /* copy path to the pathname */
-        strcpy(pathName, path);
+        _strcpy(pathName, path);
 
         /* add / to pathname */
-        strcat(pathName, "/");
+        _strcat(pathName, "/");
 
         /* add the 1st argument to the path */
-        strcat(pathName, wordArray[0]);
+        _strcat(pathName, wordArray[0]);
 
         /* check if the full pathName is valid n executable */
         if (access(pathName, X_OK) != 0)
@@ -69,13 +69,13 @@ char *getPath(char **wordArray, char **enVars)
         else
         {
             /* if path is valid*/
-            /*free tempPath allocated by strdup()*/
+            /*free tempPath allocated by _strdup()*/
             free(tempPath);
             /* return the valid path n exit.. it will be freed where it is being returned*/
             return (pathName);
         }
     }
-    /* finish looping without getting valid path free tempPath allocated by strdup()*/
+    /* finish looping without getting valid path free tempPath allocated by _strdup()*/
     free(tempPath);
     /* print error*/
     perror(wordArray[0]);

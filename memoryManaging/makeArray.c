@@ -46,7 +46,7 @@ void makeArray(char **enVars)
             exit(1);
         }
         /* Now lets append each word to the wordArray */
-        wordArray[wordCount] = strdup(word);
+        wordArray[wordCount] = _strdup(word);
         wordCount++;
         word = strtok(NULL, " ");
     }
@@ -88,7 +88,7 @@ void makeArray(char **enVars)
     /* free string  allocated memory with getline()*/
     free(string);
 
-    /* free wordArray[i] allocated memory with strdup() */
+    /* free wordArray[i] allocated memory with _strdup() */
     for (i = 0; i < wordCount; i++)
     {
         free(wordArray[i]);

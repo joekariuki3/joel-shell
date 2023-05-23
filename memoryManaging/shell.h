@@ -12,6 +12,7 @@
 /* Prototypes*/
 void makeArray(char **env);
 int myexit(char *word);
+int myenv(char *word, char **envVars);
 char *getPath(char **wordArray, char **enVars);
 
 unsigned long int _strlen(char *s);
@@ -22,6 +23,6 @@ int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, size_t n);
 char *_strdup(char *s);
 char *_strchr(char *s, int c);
-char **getWordArray(char *string);
+char **getWordArray(char *string, char **enVars);
 
 #endif

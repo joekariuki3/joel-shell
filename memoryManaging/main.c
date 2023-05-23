@@ -22,8 +22,8 @@ int main(int argc, char *argv[], char *envp[])
 		prompt = 36;
 		space = 32;
 		/* write $ on the screen */
-		write(1, &prompt, 1);
-		write(1, &space, 1);
+		write(STDOUT_FILENO, &prompt, 1);
+		write(STDOUT_FILENO, &space, 1);
 
 		/* read a line and create array */
 		makeArray(envp);

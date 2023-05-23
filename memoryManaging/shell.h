@@ -10,10 +10,9 @@
 #include <unistd.h>
 
 /* Prototypes*/
-void makeArray();
+void makeArray(char **env);
 int myexit(char *word);
 char *getPath(char **wordArray, char **enVars);
-void excec();
 
 unsigned long int _strlen(char *s);
 void *_realloc(void *ptr, size_t oldSize, size_t size);

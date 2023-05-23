@@ -8,42 +8,57 @@ void makeArray(char **enVars)
     char *string = NULL, **wordArray = NULL, *validPath = NULL;
     int status;
     pid_t pid;
-    size_t length = 0, wordCount = 0, i = 0;
+    size_t length = 0, i = 0;
     ssize_t read;
 
     read = getline(&string, &length, stdin);
     if (read == -1)
+    {
+        free(string);
         exit(1);
+    }
     string[_strlen(string) - 1] = '\0'; /* remove the newline*/
     wordArray = getWordArray(string);   /* make array from string*/
     if (wordArray == NULL)
     {
-        perror("Word Array null");
-        exit(1);
+        perror("type a command");
     }
-    validPath = getPath(wordArray, enVars); /* Look for executable */
-    if (validPath)
-    { /* if path is valid create a child process n execute it*/
-        pid = fork();
-        if (pid == -1)
-        { /*fork process failed*/
-            perror("Fork() failed");
-            exit(1);
+    else
+    {
+
+        validPath = getPath(wordArray, enVars); /* Look for executable */
+        if (validPath)
+        { /* if path is valid create a child process n execute it*/
+            pid = fork();
+            if (pid == -1)
+            { /*fork process failed*/
+                perror("Fork() failed");
+                free(string);
+                free(validPath);
+                exit(1);
+            }
+            if (pid == 0)
+            { /*child process*/
+                execve(validPath, wordArray, enVars);
+            }
+            if (pid != 0)
+            {                  /* back to parent process */
+                wait(&status); /* wait for child to finish*/
+            }
+            free(validPath); /* free validPath that ws returned from getPath()*/
         }
-        if (pid == 0)
-        { /*child process*/
-            execve(validPath, wordArray, enVars);
+        if (string)
+        {
+            free(string); /* free string  allocated memory with getline()*/
         }
-        if (pid != 0)
-        {                  /* back to parent process */
-            wait(&status); /* wait for child to finish*/
+        if (wordArray)
+        {
+
+            for (i = 0; wordArray[i] != NULL; i++)
+                free(wordArray[i]); /* free wordArray[i] allocated memory with _strdup() */
+            free(wordArray);        /* free Word Array */
         }
-        free(validPath); /* free validPath that ws returned from getPath()*/
     }
-    free(string); /* free string  allocated memory with getline()*/
-    for (i = 0; i < wordCount; i++)
-        free(wordArray[i]); /* free wordArray[i] allocated memory with _strdup() */
-    free(wordArray);        /* free Word Array */
 }
 
 /**
@@ -60,8 +75,10 @@ char **getWordArray(char *string)
     word = strtok(string, " ");
     if (word == NULL)
     {
-        free(string);
-        perror("end of string");
+        if (string)
+        {
+            free(string);
+        }
         return (NULL);
     }
     isExit = myexit(word); /* check word if it exit*/

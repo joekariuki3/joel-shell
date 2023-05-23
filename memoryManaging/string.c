@@ -114,7 +114,7 @@ int _strcmp(char *s1, char *s2)
 		s1++;
 		s2++;
 	}
-	return (*(char *)s1) - (*(char *)s2);
+	return ((*(char *)s1) - (*(char *)s2));
 }
 
 /**
@@ -137,5 +137,5 @@ int _strncmp(char *s1, char *s2, size_t n)
 	{
 		return (0);
 	}
-	return (*(char *)s1) - (*(char *)s2);
+	return ((*(char *)s1) - (*(char *)s2));
 }

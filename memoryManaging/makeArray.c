@@ -1,97 +1,96 @@
 #include "shell.h"
+/**
+ * makeArray - read input makes calls getWordArray checks validPath
+ * @enVars: environment variables
+ */
 void makeArray(char **enVars)
 {
-    char *string = NULL, *word = NULL, **wordArray = NULL, *validPath = NULL;
-    int isExit = 0, status;
+    char *string = NULL, **wordArray = NULL, *validPath = NULL;
+    int status;
+    pid_t pid;
     size_t length = 0, wordCount = 0, i = 0;
     ssize_t read;
-    pid_t pid;
 
-    /* read line entered */
     read = getline(&string, &length, stdin);
-    /*confirm line was read */
     if (read == -1)
+        exit(1);
+    string[_strlen(string) - 1] = '\0'; /* remove the newline*/
+    wordArray = getWordArray(string);   /* make array from string*/
+    if (wordArray == NULL)
     {
+        perror("Word Array null");
         exit(1);
     }
+    validPath = getPath(wordArray, enVars); /* Look for executable */
+    if (validPath)
+    { /* if path is valid create a child process n execute it*/
+        pid = fork();
+        if (pid == -1)
+        { /*fork process failed*/
+            perror("Fork() failed");
+            exit(1);
+        }
+        if (pid == 0)
+        { /*child process*/
+            execve(validPath, wordArray, enVars);
+        }
+        if (pid != 0)
+        {                  /* back to parent process */
+            wait(&status); /* wait for child to finish*/
+        }
+        free(validPath); /* free validPath that ws returned from getPath()*/
+    }
+    free(string); /* free string  allocated memory with getline()*/
+    for (i = 0; i < wordCount; i++)
+        free(wordArray[i]); /* free wordArray[i] allocated memory with _strdup() */
+    free(wordArray);        /* free Word Array */
+}
 
-    /* remove the newline at the end ot the string */
-    string[_strlen(string) - 1] = '\0';
+/**
+ * getWordArray - makes array out of string passed
+ * @string: string passed
+ * Return: a pointer to the wordArray or null
+ */
+char **getWordArray(char *string)
+{
+    char *word = NULL, **wordArray = NULL;
+    int isExit = 0;
+    size_t wordCount = 0;
 
-    /* split the string to individual words using strtok */
     word = strtok(string, " ");
     if (word == NULL)
     {
         free(string);
         perror("end of string");
-        exit(1);
+        return (NULL);
     }
-
-    /* check 1st word if it exit by calling the exit function  */
-    isExit = myexit(word);
+    isExit = myexit(word); /* check word if it exit*/
     if (isExit == 1)
     {
         free(string);
         exit(0);
     }
-
-    /* count number of words to know amount of memory to allocate */
     while (word != NULL)
     {
-        wordArray = _realloc(wordArray, (wordCount * sizeof(char *)), (wordCount + 1) * sizeof(char *));
+        wordArray = _realloc(wordArray, (wordCount * sizeof(char *)),
+                             (wordCount + 1) * sizeof(char *));
         if (wordArray == NULL)
         {
             perror("Memory re allocation failed");
-            exit(1);
+            return (NULL);
         }
-        /* Now lets append each word to the wordArray */
-        wordArray[wordCount] = _strdup(word);
+        wordArray[wordCount] = _strdup(word); /*append each word to the wordArray */
         wordCount++;
         word = strtok(NULL, " ");
     }
-
-    /*add null terminator to word array*/
-    wordArray = _realloc(wordArray, (wordCount * sizeof(char *)), (wordCount + 1) * sizeof(char *));
+    wordArray = _realloc(wordArray, (wordCount * sizeof(char *)),
+                         (wordCount + 1) * sizeof(char *)); /*add memory space for null terminator to word array*/
     if (wordArray == NULL)
     {
         perror("Memory re allocation failed");
-        exit(1);
+        return (NULL);
     }
+    /* add null terminator*/
     wordArray[wordCount] = NULL;
-
-    /* Look for executable */
-    validPath = getPath(wordArray, enVars);
-    if (validPath)
-    {
-        /* if path is valid create a child process n execute it*/
-        pid = fork();
-        if (pid == -1)
-        {
-            /*fork process failed*/
-            perror("Fork() failed");
-            exit(1);
-        }
-        if (pid == 0)
-        {
-            /*child process*/
-            execve(validPath, wordArray, enVars);
-        }
-        if (pid != 0)
-        {
-            wait(&status);
-        }
-        /* free validPath that ws returned from getPath()*/
-        free(validPath);
-    }
-
-    /* free string  allocated memory with getline()*/
-    free(string);
-
-    /* free wordArray[i] allocated memory with _strdup() */
-    for (i = 0; i < wordCount; i++)
-    {
-        free(wordArray[i]);
-    }
-    /* free Word Array */
-    free(wordArray);
+    return (wordArray);
 }

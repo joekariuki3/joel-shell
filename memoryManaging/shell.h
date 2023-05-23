@@ -10,19 +10,33 @@
 #include <unistd.h>
 
 /* Prototypes*/
-void makeArray(char **env);
-int myexit(char *word);
-int myenv(char *word, char **envVars);
-char *getPath(char **wordArray, char **enVars);
 
-unsigned long int _strlen(char *s);
+/* makeArray.c */
+void makeArray(char **env);
+char **getWordArray(char *string, char **enVars);
+
+/* getPath.c */
+char *getPath(char **wordArray, char **enVars);
+char *extractPATH(char **enVars);
+
+/* realloc.c */
 void *_realloc(void *ptr, size_t oldSize, size_t size);
+
+/* string.c */
+unsigned long int _strlen(char *s);
 char *_strcat(char *dest, char *src);
 char *_strcpy(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, size_t n);
+
+/* moreString.c */
 char *_strdup(char *s);
 char *_strchr(char *s, int c);
-char **getWordArray(char *string, char **enVars);
+
+/* exit.c */
+int myexit(char *word);
+
+/* env.c */
+int myenv(char *word, char **envVars);
 
 #endif

@@ -43,10 +43,10 @@ void makeArray(char **enVars)
 		}
 	}
 }
-
 /**
  * getWordArray - makes array out of string passed
  * @string: string passed
+ * @enVars: pointer to environment array
  * Return: a pointer to the wordArray or null
  */
 char **getWordArray(char *string, char **enVars)
@@ -68,32 +68,26 @@ char **getWordArray(char *string, char **enVars)
 		free(string);
 		exit(0);
 	}
-	isEnv = myenv(word, enVars); /* check  env cmd */
+	isEnv = myenv(word, enVars); /* check  env cmd n print enviros */
 	if (isEnv == 1)
 	{
 		free(string);
-		return(NULL);
+		return (NULL);
 	}
 	while (word != NULL)
 	{
 		wordArray = _realloc(wordArray, (wordCount * sizeof(char *)),
 				(wordCount + 1) * sizeof(char *));
 		if (wordArray == NULL)
-		{
-			perror("Memory re allocation failed");
 			return (NULL);
-		}
 		wordArray[wordCount] = _strdup(word); /*append each word to the wordArray */
 		wordCount++;
 		word = strtok(NULL, " ");
 	}
-	wordArray = _realloc(wordArray, (wordCount * sizeof(char *)), (wordCount + 1)
-			* sizeof(char *)); /*add memory space for null terminator to word array*/
+	wordArray = _realloc(wordArray, (wordCount * sizeof(char *)),
+			(wordCount + 1) * sizeof(char *));
 	if (wordArray == NULL)
-	{
-		perror("Memory re allocation failed");
 		return (NULL);
-	}
 	wordArray[wordCount] = NULL;/* add null terminator*/
 	return (wordArray);
 }

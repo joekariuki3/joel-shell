@@ -1,45 +1,93 @@
 #include "shell.h"
-char **makeArray(char *string, char *deli)
+/**
+ * makeArray - read input makes calls getWordArray checks validPath
+ * @enVars: environment variables
+ */
+void makeArray(char **enVars)
 {
-    char *word = NULL, **wordArray;
-    int wordLength = 0, index;
-    size_t wordArraySize = 0;
+	char *string = NULL, **wordArray = NULL, *validPath = NULL;
+	int status;
+	pid_t pid;
+	size_t length = 0, i = 0;
+	ssize_t read;
 
-    /* split the string to individual words using strtok */
-    word = strtok(string, deli);
+	read = getline(&string, &length, stdin);
+	if (read == -1)
+	{
+		free(string);
+		exit(1);
+	}
+	string[_strlen(string) - 1] = '\0'; /* remove the newline*/
+	wordArray = getWordArray(string, enVars);   /* make array from string*/
+	if (wordArray != NULL)
+	{
+		validPath = getPath(wordArray, enVars); /* Look for executable */
+		if (validPath)
+		{ /* if path is valid create a child process n execute it*/
+			pid = fork();
+			if (pid == -1)/*fork process failed*/
+				perror("Fork() failed");
+			if (pid == 0)/*child process*/
+				execve(validPath, wordArray, enVars);
+			if (pid != 0)/* back to parent process */
+				wait(&status); /* wait for child to finish*/
+			free(validPath); /* free validPath that ws returned from getPath()*/
+		}
+		if (string)
+			free(string); /* free string  allocated memory with getline()*/
+		if (wordArray)
+		{
+			for (i = 0; wordArray[i] != NULL; i++)
+				free(wordArray[i]); /* free wordArray[i] allocated memory with _strdup() */
+			free(wordArray);/* free Word Array */
+		}
+	}
+}
+/**
+ * getWordArray - makes array out of string passed
+ * @string: string passed
+ * @enVars: pointer to environment array
+ * Return: a pointer to the wordArray or null
+ */
+char **getWordArray(char *string, char **enVars)
+{
+	char *word = NULL, **wordArray = NULL;
+	int isExit = 0, isEnv = 0;
+	size_t wordCount = 0;
 
-    /* allocate memory to wordArray */
-    wordArray = (char **)malloc(sizeof(char *));
-    if (wordArray == NULL)
-        exit(98);
-
-    /* loop through the string getting each word*/
-    while (word != NULL)
-    {
-        /* increase wordArraySize */
-        wordArraySize++;
-
-        /* resize the array n add current word*/
-        wordArray = (char **)_realloc(wordArray, wordArraySize * sizeof(char *));
-        if (wordArray == NULL)
-            exit(98);
-
-        /* append word to wordArray */
-        /* assign memory word to be stored in wordArray[index] */
-        wordLength = _strlen(word) + 1;
-        index = wordArraySize - 1;
-        wordArray[index] = (char *)malloc(wordLength * sizeof(char));
-        if (wordArray[index] == NULL)
-            exit(98);
-
-        /* now append the word by coping it to wordArray[index] */
-        strcpy(wordArray[index], word);
-
-        /* extraxt the next argument(word)*/
-        word = strtok(NULL, " ");
-    }
-    /* Free the input buffer allocated by getline */
-
-    /*Return word Array*/
-    return (wordArray);
+	word = strtok(string, " ");
+	if (word == NULL)
+	{
+		if (string)
+			free(string);
+		return (NULL);
+	}
+	isExit = myexit(word); /* check word if it exit*/
+	if (isExit == 1)
+	{
+		free(string);
+		exit(0);
+	}
+	isEnv = myenv(word, enVars); /* check  env cmd n print enviros */
+	if (isEnv == 1)
+	{
+		free(string);
+		return (NULL);
+	}
+	while (word != NULL)
+	{
+		wordArray = _realloc(wordArray, (wordCount * sizeof(char *)),
+				(wordCount + 1) * sizeof(char *));
+		if (wordArray == NULL)
+			return (NULL);
+		wordArray[wordCount] = _strdup(word); /*append each word to the wordArray */
+		wordCount++;
+		word = strtok(NULL, " ");
+	}
+	wordArray = _realloc(wordArray, (wordCount * sizeof(char *)),
+			(wordCount + 1) * sizeof(char *));
+	if (wordArray == NULL)
+		return (NULL);
+	wordArray[wordCount] = NULL;/* add null terminator*/
+	return (wordArray);
 }

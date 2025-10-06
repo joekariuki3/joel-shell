@@ -38,16 +38,16 @@ To install and build the Custom Simple Shell:
 ## Usage Instructions
 1. Run the shell by executing the binary file: `./shell`
 2. Start interacting with the shell by entering commands. Here are some basic commands you can use:
-- `ls`: List the contents of the current directory.
-- `pwd`: Print the current working directory.
-- `cd`: Change the current working directory. Usage: `cd <directory_path>`
-- `env`: Display all environment variables and their values.
-- `echo`: Display a line of text. Usage: `echo <text_to_display>`
-- `mkdir`: Create a new directory. Usage: `mkdir <directory_name>`
-- `touch`: Create a new file. Usage: `touch <file_name>`
-- `cat`: Display the contents of a file. Usage: `cat <file_name>`
-- `rm`: Remove a file or directory. Usage: `rm <file_name>` or `rm -r <directory_name>` for recursive removal.
-6. Exit the shell using the `exit` command.
+    - `ls`: List the contents of the current directory.
+    - `pwd`: Print the current working directory.
+    - `cd`: Change the current working directory. Usage: `cd <directory_path>`
+    - `env`: Display all environment variables and their values.
+    - `echo`: Display a line of text. Usage: `echo <text_to_display>`
+    - `mkdir`: Create a new directory. Usage: `mkdir <directory_name>`
+    - `touch`: Create a new file. Usage: `touch <file_name>`
+    - `cat`: Display the contents of a file. Usage: `cat <file_name>`
+    - `rm`: Remove a file or directory. Usage: `rm <file_name>` or `rm -r <directory_name>` for recursive removal.
+3. Exit the shell using the `exit` command.
 
 ## Testing
 To ensure the reliability and correctness of the shell, comprehensive testing has been conducted, including:

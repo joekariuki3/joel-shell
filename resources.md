@@ -1,0 +1,10 @@
+https://github.com/joekariuki3/joel-shell
+https://savanna.alxafrica.com/concepts/100037
+https://savanna.alxafrica.com/concepts/100039
+https://savanna.alxafrica.com/concepts/64
+https://savanna.alxafrica.com/concepts/350
+https://savanna.alxafrica.com/concepts/559
+https://savanna.alxafrica.com/concepts/64
+https://en.wikipedia.org/wiki/Unix_shell
+https://en.wikipedia.org/wiki/Thompson_shell
+https://en.wikipedia.org/wiki/Ken_Thompson
